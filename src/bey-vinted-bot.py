@@ -5,6 +5,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from os import system, getcwd, remove, path as _path
+import os
 from numpy import mean
 from discord_webhook import DiscordWebhook, DiscordEmbed
 from time import sleep, time
@@ -199,94 +200,99 @@ price_list = []
 last_good_items = []
 picture = []
 bypass = True
-while True:
-    itemz, decrease_margin, exp_pages, webhook_link = get_settings()
 
-    # <----- selenium configuration ----->
-    options = webdriver.FirefoxOptions()
-    options.add_argument('-headless')
-    driver1 = webdriver.Firefox(options=options)
-    # <----- counting vars ----->
-    count = 1
-    item_count = 0
+def bot():
+    while True:
+        itemz, decrease_margin, exp_pages, webhook_link = get_settings()
 
-    # creation of list
-    items_list = []
-    final_list = []
-    good_items = []
+        # <----- selenium configuration ----->
+        options = webdriver.FirefoxOptions()
+        options.add_argument('-headless')
+        driver1 = webdriver.Firefox(options=options)
+        # <----- counting vars ----->
+        count = 1
+        item_count = 0
+
+        # creation of list
+        items_list = []
+        final_list = []
+        good_items = []
 
 
-    # find items
-    for _ in range(int(exp_pages)):
-        # progressbar
-        print("10% - Pages exploration...")
+        # find items
+        for _ in range(int(exp_pages)):
+            # progressbar
+            print("10% - Pages exploration...")
+            try:
+                items = []
+                driver1.get(link_builder(count))
+                # Wait for the page to fully load and the element to be visible
+                WebDriverWait(driver1, 5).until(EC.visibility_of_element_located((By.CSS_SELECTOR, "a.new-item-box__overlay.new-item-box__overlay--clickable")))
+                count = count + 1
+                items = items + driver1.find_elements(By.CSS_SELECTOR, "a.new-item-box__overlay.new-item-box__overlay--clickable")
+
+                for item in items:
+                    it1 = item.get_attribute('href')
+                    it2 = item.get_attribute('title')
+                    it = it1 + ", " + it2
+                    items_list.append(it)
+
+            except Exception as e:
+                e
+
+        print("20% - Item classification..")
+
+        # extract scraped elements 
+
+        for i in range(0, len(items_list), 1):
+            item_count = item_count + 1
+            final_list.append(items_list[i:i+1])
+
+        # doublets deleter
+        final_list = remove_duplicate(final_list)
+        
+        # find image and class the products
+
+        print("50% Exploration of items... ()")
+
+        for i in range(0,len(final_list)-1,1):
+            text_to_regex = final_list[i]
+            prezzo=re.findall(r'\b\d{1,4}(?:,\d{2})\b', text_to_regex[0])[0]
+            href = re.findall(r'https:\/\/www\.vinted\.it\/items\/\d+-[a-zA-Z0-9-]+(?:\?.*)?', text_to_regex[0])[0].split(",")[0]
+            titolo = text_to_regex[0].split(",")[1]
+            prezzo = str(prezzo)+"€"
+            if ([titolo, prezzo, href] not in last_good_items):
+                good_items.append([titolo, prezzo, href])
+                last_good_items.append([titolo, prezzo, href])
+                price_list.append(prezzo)
+
+        # detect no product found
+        if good_items == []:
+            system('cls' if os.name == 'nt' else 'clear')
+            print("items not found :/")
+        else:
+            pass
+
+        print("80% - Sending information to webhook..")  
+
+
+        def webhook_start():
+            webhook_sender(item, webhook_link)
+
+        if(bypass == False):
+            for item in good_items:
+                print("80% - Sending information to webhook.." + str(good_items.index(item)) + "/" + str(len(good_items)) + " items sent")
+                webhook_start()
+        else:
+            bypass = False
+        
+        print("100% - Operation completed !.. - Waiting for next cycle (5min)")
+        driver1.close()
         try:
-            items = []
-            driver1.get(link_builder(count))
-            # Wait for the page to fully load and the element to be visible
-            WebDriverWait(driver1, 5).until(EC.visibility_of_element_located((By.CSS_SELECTOR, "a.new-item-box__overlay.new-item-box__overlay--clickable")))
-            count = count + 1
-            items = items + driver1.find_elements(By.CSS_SELECTOR, "a.new-item-box__overlay.new-item-box__overlay--clickable")
+            remove("geckodriver.log")
+        except:
+            pass
+        sleep(300)
 
-            for item in items:
-                it1 = item.get_attribute('href')
-                it2 = item.get_attribute('title')
-                it = it1 + ", " + it2
-                items_list.append(it)
-
-        except Exception as e:
-            e
-
-    print("20% - Item classification..")
-
-    # extract scraped elements 
-
-    for i in range(0, len(items_list), 1):
-        item_count = item_count + 1
-        final_list.append(items_list[i:i+1])
-
-    # doublets deleter
-    final_list = remove_duplicate(final_list)
-    
-    # find image and class the products
-
-    print("50% Exploration of items... ()")
-
-    for i in range(0,len(final_list)-1,1):
-        text_to_regex = final_list[i]
-        prezzo=re.findall(r'\b\d{1,4}(?:,\d{2})\b', text_to_regex[0])[0]
-        href = re.findall(r'https:\/\/www\.vinted\.it\/items\/\d+-[a-zA-Z0-9-]+(?:\?.*)?', text_to_regex[0])[0].split(",")[0]
-        titolo = text_to_regex[0].split(",")[1]
-        prezzo = str(prezzo)+"€"
-        if ([titolo, prezzo, href] not in last_good_items):
-            good_items.append([titolo, prezzo, href])
-            last_good_items.append([titolo, prezzo, href])
-            price_list.append(prezzo)
-
-    # detect no product found
-    if good_items == []:
-        system("cls")
-        print("items not found :/")
-    else:
-        pass
-
-    print("80% - Sending information to webhook..")  
-
-
-    def webhook_start():
-        webhook_sender(item, webhook_link)
-
-    if(bypass == False):
-        for item in good_items:
-            print("80% - Sending information to webhook.." + str(good_items.index(item)) + "/" + str(len(good_items)) + " items sent")
-            webhook_start()
-    else:
-        bypass = False
-    
-    print("100% - Operation completed !.. - Waiting for next cycle (5min)")
-    driver1.close()
-    try:
-        remove("geckodriver.log")
-    except:
-        pass
-    sleep(300)
+if __name__ == "__main__":
+    bot()
