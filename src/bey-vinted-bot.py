@@ -98,7 +98,7 @@ def webhook_sender(item, webhook_link):
     try:
         webhook = DiscordWebhook(
                 url=webhook_link,
-                username="Vingod")
+                username="Vinted Bot",)
         embed = DiscordEmbed(title=item[0], color='FF1F1F')
         
         image, desc = info_getter(item[2])
@@ -155,9 +155,9 @@ def shortlink(link):
     return s.tinyurl.short(link)
     
 def bot(items_list, final_list, price_list, last_good_items, bypass):
-    i = 0
-    while i < 2:
-        i=i+1
+    h = 0
+    while h < 2:
+        h=h+1
         import sys
         sys.stdout.flush()
         _,_, exp_pages, webhook_link = get_settings()
@@ -230,6 +230,10 @@ def bot(items_list, final_list, price_list, last_good_items, bypass):
         # find image and class the products
 
         print("50% Exploration of items... ()")
+        # Load last_good_items from history.json
+        last_good_items = read_json(os.path.join(getcwd(), "assets", "history.json"))
+
+        last_good_items_tuples = [(item['titolo'], item['prezzo'], item['href']) for item in last_good_items.values()]
 
         for i in range(0,len(final_list)-1,1):
             text_to_regex = final_list[i]
@@ -237,9 +241,10 @@ def bot(items_list, final_list, price_list, last_good_items, bypass):
             href = re.findall(r'https:\/\/www\.vinted\.it\/items\/\d+-[a-zA-Z0-9-]+(?:\?.*)?', text_to_regex[0])[0].split(",")[0]
             titolo = text_to_regex[0].split(",")[1]
             prezzo = str(prezzo)+"€"
-            if ([titolo, prezzo, href] not in last_good_items):
+            # Check if the tuple is not in last_good_items_tuples
+            if (titolo, prezzo, href) not in last_good_items_tuples:
                 good_items.append([titolo, prezzo, href])
-                last_good_items.append([titolo, prezzo, href])
+                last_good_items[len(last_good_items)] = {'titolo': titolo, 'prezzo': prezzo, 'href': href}
                 price_list.append(prezzo)
 
         # detect no product found
@@ -253,6 +258,8 @@ def bot(items_list, final_list, price_list, last_good_items, bypass):
 
         def webhook_start():
             webhook_sender(item, webhook_link)
+
+        write_json(f"{getcwd()}"+os.sep+"assets"+os.sep+"history.json", last_good_items)
 
         if(bypass == False):
             for item in good_items:

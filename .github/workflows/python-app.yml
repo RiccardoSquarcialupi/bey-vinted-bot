@@ -5,7 +5,7 @@ name: Python application
 
 on:
   schedule: 
-    - cron: "*/30 * * * *"
+    - cron: "*/15 * * * *"
   push:
     branches: [ "main" ]
   pull_request:
@@ -27,9 +27,21 @@ jobs:
         python -m pip install --upgrade pip
         pip install pytest
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-    - name: Run  
+    - name: bot
       run: |
         cd src/
         python test.py
         python bey-vinted-bot.py
+
+    - name: setup git config
+      run: |
+        git config user.name "GitHub Actions Bot"
+        git config user.email "<>"
+
+    - name: commit
+      run: |
+        # Stage the file, commit and push
+        git add *
+        git commit -m "new data added by bot in history"
+        git push origin main
         
