@@ -108,7 +108,7 @@ def remove_duplicate(list):
 
 # <----- get settings ----->
 def get_settings():
-    json_data = read_json(f"{getcwd()}/assets/settings.json")
+    json_data = read_json(f"{getcwd()}"+os.sep+"assets"+os.sep+"settings.json")
     return json_data["Item"], json_data["Margin"], json_data["Explored_pages"], json_data["Webhook"]
 
 def info_getter(link):
@@ -156,7 +156,7 @@ def webhook_sender(item, webhook_link):
             webhook.add_embed(embed)
             webhook.execute()
         else:
-            print(found_words)
+            print("No valid words found in the description, skipping...")
     except Exception as e:
             e.with_traceback()
 
@@ -188,22 +188,9 @@ def shortlink(link):
     s = Shortener()
     return s.tinyurl.short(link)
     
-# <----- bot ----->
-print(banner)
-# bot settings
-
-##TODO infinite cycle with time check
-
-items_list = []
-final_list = []
-price_list = []
-last_good_items = []
-picture = []
-bypass = True
-
-def bot():
+def bot(items_list, final_list, price_list, last_good_items, bypass):
     while True:
-        itemz, decrease_margin, exp_pages, webhook_link = get_settings()
+        _,_, exp_pages, webhook_link = get_settings()
 
         # <----- selenium configuration ----->
         options = webdriver.FirefoxOptions()
@@ -286,13 +273,21 @@ def bot():
         else:
             bypass = False
         
-        print("100% - Operation completed !.. - Waiting for next cycle (5min)")
+        print("100% - Operation completed !.. - Waiting for next cycle (30sec)")
         driver1.close()
         try:
             remove("geckodriver.log")
         except:
             pass
-        sleep(300)
+        sleep(30)
 
 if __name__ == "__main__":
-    bot()
+    # <----- bot ----->
+    print(banner)
+    # bot settings
+    items_list = []
+    final_list = []
+    price_list = []
+    last_good_items = []
+    bypass = True
+    bot(items_list, final_list, price_list, last_good_items, bypass)
