@@ -4,6 +4,8 @@
 name: Python application
 
 on:
+  schedule: 
+    - cron: "*/30 * * * *"
   push:
     branches: [ "main" ]
   pull_request:
