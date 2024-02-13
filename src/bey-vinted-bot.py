@@ -125,7 +125,6 @@ def link_builder(count):
     
 # <----- progress bar ----->
 def progressbar(banner, w, bar):
-    system('cls' if os.name == 'nt' else 'clear')
     print(f"\n{banner}\n {w}{bar}")
 
 def shortlink(link):
@@ -199,7 +198,6 @@ def bot(items_list, final_list, price_list, last_good_items, bypass):
 
         # detect no product found
         if good_items == []:
-            system('cls' if os.name == 'nt' else 'clear')
             print("items not found :/")
         else:
             pass
@@ -229,7 +227,7 @@ if __name__ == "__main__":
     # <----- bot ----->
     import os
     #ubuntu latest version
-    
+
     if os.name == 'nt':
         os.environ['TERM'] = 'xterm'
     
