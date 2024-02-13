@@ -9,9 +9,6 @@ on:
   pull_request:
     branches: [ "main" ]
 
-permissions:
-  contents: read
-
 jobs:
   build:
 
@@ -19,7 +16,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - name: Set up Python 3.10
+    - name: Set up Python
       uses: actions/setup-python@v3
       with:
         python-version: "3.8.18"
@@ -28,4 +25,5 @@ jobs:
         python -m pip install --upgrade pip
         pip install flake8 pytest
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+        cd src/
         python bey-vinted-bot.py
