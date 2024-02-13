@@ -126,6 +126,8 @@ def shortlink(link):
     
 def bot(items_list, final_list, price_list, last_good_items, bypass):
     while True:
+        import sys
+        sys.stdout.flush()
         _,_, exp_pages, webhook_link = get_settings()
 
         # <----- selenium configuration ----->
@@ -225,7 +227,6 @@ if __name__ == "__main__":
         os.environ['TERM'] = 'xterm'
     
     print(banner) 
-    exit()
     # bot settings
     items_list = []
     final_list = []
