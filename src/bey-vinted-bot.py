@@ -34,12 +34,6 @@ banner = f"""
                                                                                                        
 """
 
-# <-----  file reader ----->
-def write_file(file_path: str, data: dict) -> None:
-    with open(file_path, 'w') as f:
-        data = f.write(data)
-    return data
-
 
 # <----- json file reader ----->
 def read_json(file_path: str) -> dict:
@@ -47,60 +41,10 @@ def read_json(file_path: str) -> dict:
         data = load(json_file)
     return data
 
-
 # <----- json file writer ----->
 def write_json(file_path: str, data: dict) -> None:
     with open(file_path, 'w') as json_file:
         dump(data, json_file)
-
-
-# <-----  json file cleaner ----->
-def json_cleaner(json_path):
-    json_data = read_json(f"{getcwd()}\\assets\\{json_path}")
-    json_data.clear()
-    json_data.update({})
-    json_file = write_json(f"{getcwd()}\\assets\\{json_path}", json_data) 
-
-    system('cls')
-    print(f"""\n{banner}\n {c}[{w}INFO{c}]{w} {json_path} has been cleaned succesfully !""")
-    sleep(2)
-
-
-# <----- random letters gen ----->
-def lettergen(lenght):
-    letters = string.ascii_lowercase
-    return ''.join(random.choice(letters) for i in range(int(lenght)))
-
-
-# <----- brand converter ----->
-def brand_converter(bid):
-    json_data = read_json(f"{getcwd()}\\assets\\brands.json")
-    for brand in json_data:
-        if bid == str(brand):
-            return json_data[bid]
-        else:
-            pass
-    return f"Unlisted brand ({bid})"
-
-
-# <----- item type converter ----->
-def item_type_converter(iid):
-    json_data = read_json(f"{getcwd()}\\assets\\item_type.json")
-    for item_id in json_data:
-        if iid == str(item_id):
-            return json_data[iid]
-        else:
-            pass
-    return f"Unlisted item ({iid})"
-
-# <----- size converter ----->
-def size_converter(size):
-    json_data = read_json(f"{getcwd()}\\assets\\sizes.json")
-    for s in json_data:
-        if size == s:
-            return json_data[size]
-        else:
-            pass 
         
 # <----- remove duplicate ----->
 def remove_duplicate(list):
@@ -136,7 +80,7 @@ def webhook_sender(item, webhook_link):
         
         image, desc = info_getter(item[2])
         desc1 = desc.lower().split(" ")
-        word_list = read_json(f"{getcwd()}\\assets\\plastic.json")
+        word_list = read_json(f"{getcwd()}"+os.sep+"assets"+os.sep+"plastic.json")
         word_list = word_list["beyblade_words"]
         found_words = []
         found_words = [word for word in word_list if word in desc1]
@@ -181,7 +125,7 @@ def link_builder(count):
     
 # <----- progress bar ----->
 def progressbar(banner, w, bar):
-    system("cls")
+    system('cls' if os.name == 'nt' else 'clear')
     print(f"\n{banner}\n {w}{bar}")
 
 def shortlink(link):
