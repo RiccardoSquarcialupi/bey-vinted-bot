@@ -60,7 +60,7 @@ def info_getter(link):
         desc = driver.find_element(By.CSS_SELECTOR, "span.web_ui__Text__text.web_ui__Text__body.web_ui__Text__left.web_ui__Text__format").text
     except Exception as e:
         driver.close()
-        return img, "No description found..."
+        return img, "No description found..." #cdc
     driver.close()
     return img, desc
 # <----- webhook sender ----->
