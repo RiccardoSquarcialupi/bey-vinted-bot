@@ -155,7 +155,9 @@ def shortlink(link):
     return s.tinyurl.short(link)
     
 def bot(items_list, final_list, price_list, last_good_items, bypass):
-    while True:
+    i = 0
+    while i < 2:
+        i=i+1
         import sys
         sys.stdout.flush()
         _,_, exp_pages, webhook_link = get_settings()
@@ -265,7 +267,6 @@ def bot(items_list, final_list, price_list, last_good_items, bypass):
             remove("geckodriver.log")
         except:
             pass
-        sleep(30)
 
 if __name__ == "__main__":
     # <----- bot ----->
@@ -281,5 +282,5 @@ if __name__ == "__main__":
     final_list = []
     price_list = []
     last_good_items = []
-    bypass = False
+    bypass = True
     bot(items_list, final_list, price_list, last_good_items, bypass)
