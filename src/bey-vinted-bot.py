@@ -217,19 +217,19 @@ def bot(items_list, final_list, price_list, last_good_items, bypass):
         sleep(30)
 
 if __name__ == "__main__":
-    # <----- bot ----->
-    import os
-    #ubuntu latest version
-
-    if os.name == 'nt':
-        os.environ['TERM'] = 'xterm'
-    
-    print(banner)
-    return 
-    # bot settings
-    items_list = []
-    final_list = []
-    price_list = []
-    last_good_items = []
-    bypass = False
-    bot(items_list, final_list, price_list, last_good_items, bypass)
+      # <----- bot ----->
+      import os
+      #ubuntu latest version
+      
+      if os.name == 'nt':
+         os.environ['TERM'] = 'xterm'
+      
+      print(banner)
+      return 
+      # bot settings
+      items_list = []
+      final_list = []
+      price_list = []
+      last_good_items = []
+      bypass = False
+      bot(items_list, final_list, price_list, last_good_items, bypass)
