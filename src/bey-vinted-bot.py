@@ -107,7 +107,7 @@ def remove_duplicate(list):
 
 # <----- get settings ----->
 def get_settings():
-    json_data = read_json(f"{getcwd()}\\assets\\settings.json")
+    json_data = read_json(f"{getcwd()}/assets/settings.json")
     return json_data["Item"], json_data["Margin"], json_data["Explored_pages"], json_data["Webhook"]
 
 def info_getter(link):
