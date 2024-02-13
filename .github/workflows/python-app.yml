@@ -25,8 +25,10 @@ jobs:
         python -m pip install --upgrade pip
         pip install pytest
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+        sudo apt-get install firefox-geckodriver
     - name: Run  
       run: |
         cd src/
         python test.py
         python bey-vinted-bot.py
+        
