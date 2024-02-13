@@ -227,6 +227,12 @@ def bot(items_list, final_list, price_list, last_good_items, bypass):
 
 if __name__ == "__main__":
     # <----- bot ----->
+    import os
+    #ubuntu latest version
+    
+    if os.name == 'nt':
+        os.environ['TERM'] = 'xterm'
+    
     print(banner)
     # bot settings
     items_list = []
