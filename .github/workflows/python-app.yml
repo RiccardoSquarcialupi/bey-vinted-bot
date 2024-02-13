@@ -28,4 +28,5 @@ jobs:
     - name: Run  
       run: |
         cd src/
+        python test.py
         python bey-vinted-bot.py
