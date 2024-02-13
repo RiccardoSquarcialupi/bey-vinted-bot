@@ -11,6 +11,17 @@ from json import load, dump
 from colorama import Fore
 from requests import get
 from pyshorteners import Shortener
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service
+import chromedriver_autoinstaller
+from pyvirtualdisplay import Display
+display = Display(visible=0, size=(800, 800))  
+display.start()
+
+chromedriver_autoinstaller.install()  # Check if the current version of chromedriver exists
+                                      # and if it doesn't exist, download it automatically,
+                                      # then add chromedriver to path
 
 # ----- colorama settings -----
 c = Fore.LIGHTCYAN_EX
@@ -49,9 +60,28 @@ def get_settings():
     return json_data["Item"], json_data["Margin"], json_data["Explored_pages"], json_data["Webhook"]
 
 def info_getter(link):
-    options1 = webdriver.FirefoxOptions()
-    options1.add_argument('-headless')
-    driver = webdriver.Firefox(options=options1)
+    chrome_options = webdriver.ChromeOptions()    
+    # Add your options as needed    
+    options = [
+    # Define window size here
+    "--window-size=1200,1200",
+        "--ignore-certificate-errors"
+    
+        "--headless",
+        #"--disable-gpu",
+        #"--window-size=1920,1200",
+        #"--ignore-certificate-errors",
+        #"--disable-extensions",
+        #"--no-sandbox",
+        #"--disable-dev-shm-usage",
+        #'--remote-debugging-port=9222'
+    ]
+
+    for option in options:
+        chrome_options.add_argument(option)
+
+        
+    driver = webdriver.Chrome(options = chrome_options)
     driver.get(link)
     try:
         wait = WebDriverWait(driver, 10)
@@ -131,9 +161,28 @@ def bot(items_list, final_list, price_list, last_good_items, bypass):
         _,_, exp_pages, webhook_link = get_settings()
 
         # <----- selenium configuration ----->
-        options = webdriver.FirefoxOptions()
-        options.add_argument('-headless')
-        driver1 = webdriver.Firefox(options=options)
+        chrome_options = webdriver.ChromeOptions()    
+        # Add your options as needed    
+        options = [
+        # Define window size here
+        "--window-size=1200,1200",
+            "--ignore-certificate-errors"
+        
+            "--headless",
+            #"--disable-gpu",
+            #"--window-size=1920,1200",
+            #"--ignore-certificate-errors",
+            #"--disable-extensions",
+            #"--no-sandbox",
+            #"--disable-dev-shm-usage",
+            #'--remote-debugging-port=9222'
+        ]
+
+        for option in options:
+            chrome_options.add_argument(option)
+
+            
+        driver1 = webdriver.Chrome(options = chrome_options)
         # <----- counting vars ----->
         count = 1
         item_count = 0
