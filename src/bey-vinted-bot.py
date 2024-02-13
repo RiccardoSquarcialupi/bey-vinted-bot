@@ -225,6 +225,7 @@ if __name__ == "__main__":
         os.environ['TERM'] = 'xterm'
     
     print(banner)
+    return 
     # bot settings
     items_list = []
     final_list = []
