@@ -289,5 +289,5 @@ if __name__ == "__main__":
     final_list = []
     price_list = []
     last_good_items = []
-    bypass = True
+    bypass = False
     bot(items_list, final_list, price_list, last_good_items, bypass)
