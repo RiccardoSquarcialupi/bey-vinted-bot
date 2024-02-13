@@ -1,19 +1,15 @@
 from selenium import webdriver
-import multiprocessing
 import re
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from os import system, getcwd, remove, path as _path
 import os
-from numpy import mean
+from os import getcwd, remove
 from discord_webhook import DiscordWebhook, DiscordEmbed
-from time import sleep, time
+from time import sleep
 from json import load, dump
-import random, string
-from colorama import Fore, init
+from colorama import Fore
 from requests import get
-from pypresence import Presence
 from pyshorteners import Shortener
 
 # ----- colorama settings -----
@@ -21,17 +17,14 @@ c = Fore.LIGHTCYAN_EX
 w = Fore.LIGHTWHITE_EX
 
 # ----- banner -----
-banner = f"""
-
-                  )                  (         )                  (                       )            
+banner = f"""                 )                  (         )                  (                       )            
    (           ( /(                  )\ )   ( /(    *   )         )\ )            (    ( /(     *   )  
  ( )\   (      )\())        (   (   (()/(   )\()) ` )  /(   (    (()/(          ( )\   )\())  ` )  /(  
  )((_)  )\    ((_)\   ___   )\  )\   /(_)) ((_)\   ( )(_))  )\    /(_))   ___   )((_) ((_)\    ( )(_)) 
 ((_)_  ((_)  __ ((_) |___| ((_)((_) (_))    _((_) (_(_())  ((_)  (_))_   |___| ((_)_    ((_)  (_(_())  
  | _ ) | __| \ \ / /       \ \ / /  |_ _|  | \| | |_   _|  | __|  |   \         | _ )  / _ \  |_   _|  
  | _ \ | _|   \ V /         \ V /    | |   | .` |   | |    | _|   | |) |        | _ \ | (_) |   | |    
- |___/ |___|   |_|           \_/    |___|  |_|\_|   |_|    |___|  |___/         |___/  \___/    |_|    
-                                                                                                       
+ |___/ |___|   |_|           \_/    |___|  |_|\_|   |_|    |___|  |___/         |___/  \___/    |_|                                                                                                   
 """
 
 
@@ -237,5 +230,5 @@ if __name__ == "__main__":
     final_list = []
     price_list = []
     last_good_items = []
-    bypass = True
+    bypass = False
     bot(items_list, final_list, price_list, last_good_items, bypass)
