@@ -26,4 +26,5 @@ jobs:
         pip install flake8 pytest
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
         set | grep TERM
+        cd src/
         python bey-vinted-bot.py
