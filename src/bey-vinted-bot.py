@@ -142,7 +142,7 @@ def webhook_checker(webhook_link):
     
 # <----- link builder ----->
 def link_builder(count):
-    link = "https://www.vinted.it/catalog?search_text=beyblade%20plastic&brand_ids[]=270688&brand_ids[]=114196&brand_ids[]=330038&brand_ids[]=65554&brand_ids[]=165516&brand_ids[]=281034&order=newest_first&page=" + str(count) + "'"
+    link = "https://www.vinted.it/catalog?search_text=beyblade&brand_ids[]=270688&brand_ids[]=114196&brand_ids[]=330038&brand_ids[]=65554&brand_ids[]=165516&brand_ids[]=281034&order=newest_first&page=" + str(count) + "'"
     return link
     
     
@@ -156,7 +156,7 @@ def shortlink(link):
     
 def bot(items_list, final_list, price_list, last_good_items, bypass):
     h = 0
-    while h < 1:
+    while h < 2:
         h=h+1
         import sys
         sys.stdout.flush()
