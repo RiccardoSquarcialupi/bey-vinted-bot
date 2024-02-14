@@ -156,7 +156,7 @@ def shortlink(link):
     
 def bot(items_list, final_list, price_list, last_good_items, bypass):
     h = 0
-    while h < 2:
+    while h < 1:
         h=h+1
         import sys
         sys.stdout.flush()

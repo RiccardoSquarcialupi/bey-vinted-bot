@@ -5,7 +5,7 @@ name: Python application
 permissions: write-all
 on:
   schedule: 
-    - cron: "*/17 * * * *"
+    - cron: "*/10 * * * *"
   push:
     branches: [ "main" ]
   pull_request:
