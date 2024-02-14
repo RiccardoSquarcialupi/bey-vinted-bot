@@ -5,7 +5,7 @@ name: Python application
 permissions: write-all
 on:
   schedule: 
-    - cron: "*/15 * * * *"
+    - cron: "*/17 * * * *"
   push:
     branches: [ "main" ]
   pull_request:
@@ -42,6 +42,13 @@ jobs:
       run: |
         # Stage the file, commit and push
         git add *
-        git commit -m "new data added by bot in history"
-        git push origin main
+        # Check if there are changes to commit
+        if [ -n "$(git status --porcelain)" ]; then
+            # Commit changes with a message
+            git commit -m "new data added by bot in history"
+            # Push changes to the remote repository
+            git push origin main
+        else
+            echo "Nothing to commit."
+        fi
         
