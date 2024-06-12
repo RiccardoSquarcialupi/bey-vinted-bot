@@ -103,27 +103,30 @@ def webhook_sender(item, webhook_link):
         
         image, desc = info_getter(item[2])
         desc1 = desc.lower().split(" ")
-        word_list = read_json(f"{getcwd()}"+os.sep+"assets"+os.sep+"plastic.json")
-        word_list = word_list["beyblade_words"]
-        found_words = []
-        found_words = [word for word in word_list if word in desc1]
-
-        # Find words from the JSON list inside the input string
-        if(bool(found_words)):
-            n = len(found_words)
-            embed.set_image(image)
-            embed.add_embed_field(name='Price :dollar:', value=item[1].replace(" prezzo\xa0:", "" + '€'))
-            embed.add_embed_field(name='Product Link :link:', value=shortlink(item[2]), inline=True)
-            embed.add_embed_field(name='Description :label:', value=found_words[0]+" - " + desc, inline=True)
-            embed.set_author(name='RiccardoSquarcialupi',
-                            icon_url='https://avatars.githubusercontent.com/u/44367261?v=4',
-                            url='https://github.com/RiccardoSquarcialupi')
-            embed.set_footer(text='Let it RIP!!!')
-            embed.set_timestamp()
-            webhook.add_embed(embed)
-            webhook.execute()
+        if 'burst' in desc1 or 'masters' in desc1 or 'fusion' in desc1:
+            print("is a burst/metal item, fuck off we want only plastic gen broski")
         else:
-            print("No valid words found in the description, skipping...")
+            word_list = read_json(f"{getcwd()}"+os.sep+"assets"+os.sep+"plastic.json")
+            word_list = word_list["beyblade_words"]
+            found_words = []
+            found_words = [word for word in word_list if word in desc1]
+            
+            # Find words from the JSON list inside the input string
+            if(bool(found_words)):
+                n = len(found_words)
+                embed.set_image(image)
+                embed.add_embed_field(name='Price :dollar:', value=item[1].replace(" prezzo\xa0:", "" + '€'))
+                embed.add_embed_field(name='Product Link :link:', value=shortlink(item[2]), inline=True)
+                embed.add_embed_field(name='Description :label:', value=found_words[0]+" - " + desc, inline=True)
+                embed.set_author(name='RiccardoSquarcialupi',
+                                icon_url='https://avatars.githubusercontent.com/u/44367261?v=4',
+                                url='https://github.com/RiccardoSquarcialupi')
+                embed.set_footer(text='Let it RIP!!!')
+                embed.set_timestamp()
+                webhook.add_embed(embed)
+                webhook.execute()
+            else:
+                print("No valid words found in the description, skipping...")
     except Exception as e:
             e.with_traceback()
 
