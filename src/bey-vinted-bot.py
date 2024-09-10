@@ -91,7 +91,7 @@ def send_webhook(item, webhook_url):
         webhook = DiscordWebhook(url=webhook_url, username=WEBHOOK_USERNAME)
         embed = DiscordEmbed(title=item[0], color='FF1F1F')
         embed.set_image(image)
-        embed.add_embed_field(name='Price :dollar:', value=f"{item[1].replace(' prezzo:', '')}€")
+        embed.add_embed_field(name='Price :dollar:', value=item[1].replace(" prezzo\xa0:", "" + '€'))
         embed.add_embed_field(name='Product Link :link:', value=shorten_url(item[2]), inline=True)
         embed.add_embed_field(name='Description :label:', value=f"{matched_words[0]} - {description}", inline=True)
         embed.set_author(name='RiccardoSquarcialupi', icon_url='https://avatars.githubusercontent.com/u/44367261?v=4')
